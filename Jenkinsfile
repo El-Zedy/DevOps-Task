@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools { 
+        maven '3.9.6' 
+    }
+
     environment {
         IMAGE_NAME = 'java-application'
         IMAGE_TAG = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
@@ -8,6 +12,20 @@ pipeline {
     }
 
     stages {
+        stage('Build and SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarQube') {
+                    sh 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
