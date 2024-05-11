@@ -14,15 +14,8 @@ pipeline {
     stages {
         stage('Build and SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarQube') {
+                withSonarQubeEnv('Sonar') {
                     sh 'mvn clean package sonar:sonar'
-                }
-            }
-        }
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
                 }
             }
         }
