@@ -12,6 +12,7 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
             dir('ansible') {
+              sh "ansible-galaxy role install bodsch.awscli"  
               sh "chmod 400 ../../private.pem && ansible-playbook k8s-pb.yaml"
              }
         }
