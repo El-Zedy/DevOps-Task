@@ -9,9 +9,6 @@
         update_cache: yes
         upgrade: yes
 
-
-   
-
     - name: Install Docker CE
       apt:
         name: docker.io
@@ -27,10 +24,16 @@
         groups: docker
         append: yes
 
+    - name: Just ensuring the repo checkout exists
+      ansible.builtin.git:
+        repo: 'https://github.com/El-Zedy/DevOps-Task.git'
+        dest: /home/ubuntu
+        update: no
+
     - name: Build Docker image from Dockerfile
       community.docker.docker_image:
         build:
-          path: "."  # Assumes playbook is run in the same directory as the Dockerfile
-        name: paymob_app
+          path: "." 
+        name: app
         tag: "{{ build_timestamp }}"
         source: build
