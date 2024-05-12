@@ -50,8 +50,8 @@
     - name: Deploy Application
       kubernetes.core.k8s:
         state: present
-        definition: "{{ lookup('file', 'k8s-manifests/deployment.yml') | from_yaml }}"
-        
+        definition: "{{ lookup('file', 'k8s-manifests/deployment.yaml') | from_yaml }}"
+
     # - name: Deploy to Kubernetes
     #   community.kubernetes.k8s:
     #     kubeconfig: /home/ubuntu/.kube/config
