@@ -47,19 +47,16 @@
         line: '\1{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}\2'
         backrefs: yes
 
-    - name: List files in k8s-manifests directory
-      command: ls -l /home/ubuntu/DevOps-Task/k8s-manifests/
-      register: ls_output
-
-    - name: Show ls output
-      debug:
-        msg: "{{ ls_output.stdout_lines }}"
-
+    - name: Read deployment file
+      ansible.builtin.command:
+        cmd: cat /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+      register: deployment_file_content
 
     - name: Deploy Application
       kubernetes.core.k8s:
         state: present
-        definition: "{{ lookup('file', '/home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml') | from_yaml }}"
+        definition: "{{ deployment_file_content.stdout | from_yaml }}"
+
 
     # - name: Deploy to Kubernetes
     #   community.kubernetes.k8s:
