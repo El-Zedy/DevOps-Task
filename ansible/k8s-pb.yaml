@@ -23,8 +23,13 @@
     - name: Build Docker image from Dockerfile using shell
       command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
     
-    - name: login to ecr
-      command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 454717754853.dkr.ecr.us-east-1.amazonaws.com/paymob
+    - name: Login to AWS ECR
+      shell: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 454717754853.dkr.ecr.us-east-1.amazonaws.com/paymob
+      register: login_output
+      failed_when: login_output.stderr != ''
+
+    # - name: login to ecr
+    #   command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 454717754853.dkr.ecr.us-east-1.amazonaws.com/paymob
     # - name: create aws ecr
     #   command: aws ecr create-repository --repository-name paymob
 
