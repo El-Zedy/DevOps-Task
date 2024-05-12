@@ -23,8 +23,5 @@
     # - name: Build Docker image from Dockerfile using shell
     #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
     
-    - name: Create an AWS ECR Repository
-      community.aws.ecs_ecr:
-        name: paymob
-        state: present
-
+    - name: ecr-repo
+      ecs_ecr: name=super/cool
