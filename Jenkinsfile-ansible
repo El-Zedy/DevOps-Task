@@ -12,7 +12,7 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
             dir('ansible') {
-              sh "chmod ../../private.pem && ansible-playbook playbook.yaml"
+              sh "chmod 400 ../../private.pem && ansible-playbook playbook.yaml"
              }
         }
     }
