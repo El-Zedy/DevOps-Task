@@ -2,8 +2,6 @@
 - name: Install Docker and add user to Docker group
   hosts: all
   become: true
-  roles:
-    - role: ansible-role-awscli
   tasks:
 
     - name: Update Ubuntu
@@ -11,10 +9,16 @@
         update_cache: yes
         upgrade: yes
 
+    - name: add ansible playbook
+      command: ansible-galaxy role install christiangda.awscli
+    
     - name: Set build timestamp
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
+  roles:
+      - role: christiangda.awscli
+      
     # - name: Download kubectl
     #   get_url:
     #     url: "https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl"
