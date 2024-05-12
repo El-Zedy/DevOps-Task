@@ -15,13 +15,13 @@
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
-    # - name: Just ensuring the repo checkout exists
-    #   ansible.builtin.git:
-    #     repo: 'https://github.com/El-Zedy/DevOps-Task.git'
-    #     dest: /home/ubuntu/DevOps-Task
+    - name: Just ensuring the repo checkout exists
+      ansible.builtin.git:
+        repo: 'https://github.com/El-Zedy/DevOps-Task.git'
+        dest: /home/ubuntu/DevOps-Task
         
-    # - name: Build Docker image from Dockerfile using shell
-    #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
+    - name: Build Docker image from Dockerfile using shell
+      command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
     
     - name: ecr-repo
       ecs_ecr: name=super/cool
