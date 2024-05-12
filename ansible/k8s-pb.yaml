@@ -24,7 +24,7 @@
     #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
     
     - name: Login to AWS ECR
-      shell: ls
+      shell: aws s3 ls
 
     # - name: login to ecr
     #   command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 454717754853.dkr.ecr.us-east-1.amazonaws.com/paymob
