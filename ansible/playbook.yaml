@@ -1,19 +1,46 @@
-- name: Build and Run Docker Container from a GitHub Repository
+---
+- name: Install Docker and add user to Docker group
   hosts: all
   become: true
   tasks:
-    - name: Build Docker image
-      docker_image:
-        source: build
-        build:
-          path: '/tmp/DevOps-Task'
-        name: 'elzedy/devops-app'
-        tag: 'latest'
-        force_source: yes  # Forces the build from the build context and not from Docker cache
-        force_tag: yes     # Always re-tag the image even if the image with the tag already exists
+    - name: Install required packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
 
-    - name: Run the Docker container
-      docker_container:
-        name: 'devops-app'
-        image: 'elzedy/devops-app:latest'
-        state: started
+    - name: Add Docker's official GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+        state: present
+
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    - name: Add specified user to Docker group
+      user:
+        name: ubuntu  # Change this to the user you want to add to the Docker group
+        groups: docker
+        append: yes
+
+    - name: Build Docker image from Dockerfile
+      community.docker.docker_image:
+        build:
+          path: "."  # Assumes playbook is run in the same directory as the Dockerfile
+        name: myimage
+        tag: mytag
+        source: build
