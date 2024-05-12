@@ -3,6 +3,11 @@
   hosts: all
   become: true
   tasks:
+
+    - name: Set build timestamp
+      set_fact:
+        build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+
     - name: Install required packages
       apt:
         name: "{{ packages }}"
@@ -14,9 +19,11 @@
           - ca-certificates
           - curl
           - software-properties-common
+          - requests
+          - urllib3
 
-    - name: Add Docker's official GPG key
-      ansible.builtin.apt_key:
+    - name: Add Docker GPG apt Key
+      apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
@@ -41,6 +48,6 @@
       community.docker.docker_image:
         build:
           path: "."  # Assumes playbook is run in the same directory as the Dockerfile
-        name: myimage
-        tag: mytag
+        name: paymob_app
+        tag: "{{ build_timestamp }}"
         source: build
