@@ -4,12 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/El-Zedy/DevOps-Task.git'
+                // Specify the branch if it's not 'master'
+                git branch: 'main', url: 'https://github.com/El-Zedy/DevOps-Task.git'
             }
         }
 
         stage('Run Ansible Playbook') {
             steps {
+                sh "pwd"
                 // Run Ansible playbook
                 ansiblePlaybook(
                     credentialsId: 'ansible-server', 
