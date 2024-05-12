@@ -44,3 +44,10 @@
     #     source: build
     - name: Build Docker image from Dockerfile using shell
       command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
+
+    - name: Run Container
+      community.docker.docker_container:
+        name: my_nginx
+        image: app:"{{ build_timestamp }}"
+        state: started
+  
