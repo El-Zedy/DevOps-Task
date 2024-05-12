@@ -27,7 +27,7 @@
     - name: Just ensuring the repo checkout exists
       ansible.builtin.git:
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
-        dest: /home/ubuntu/
+        dest: /home/ubuntu/DevOps-Task
 
     - name: Build Docker image from Dockerfile
       community.docker.docker_image:
