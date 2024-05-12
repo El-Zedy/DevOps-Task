@@ -11,7 +11,13 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                ansiblePlaybook become: true, colorized: true, credentialsId: 'ansible-server', installation: 'Ansible', inventory: '/ansible/inventory', playbook: '/ansible/playbook.yaml', vaultTmpPath: ''
+                ansiblePlaybook become: true, 
+                                colorized: true, 
+                                credentialsId: 'ansible-server',
+                                disableHostKeyChecking: true,
+                                installation: 'Ansible',
+                                inventory: '/ansible/inventory',
+                                playbook: '/ansible/playbook.yaml'
              }
         }
     }
