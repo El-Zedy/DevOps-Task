@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/El-Zedy/DevOps-Task.git'
+            }
+        }
+
+        stage('Run Ansible Playbook') {
+            steps {
+                // Run Ansible playbook
+                ansiblePlaybook(
+                    credentialsId: 'ansible-server', 
+                    installation: 'Ansible', 
+                    playbook: 'ansible/playbook.yaml'
+                )
+            }
+        }
+    }
+}
