@@ -32,7 +32,7 @@
     - name: Build Docker image from Dockerfile
       community.docker.docker_image:
         build:
-          path: "." 
+          path: "./DevOps-Task" 
         name: app
         tag: "{{ build_timestamp }}"
         source: build
