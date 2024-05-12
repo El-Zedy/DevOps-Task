@@ -13,10 +13,17 @@
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
     
-    - name: Install AWS CLI
+    - name: Install pip
       apt:
+        name: python3-pip
+        state: present
+        become: yes
+
+    - name: Install AWS CLI using pip
+      pip:
         name: awscli
         state: present
+
 
     - name: Download kubectl
       get_url:
