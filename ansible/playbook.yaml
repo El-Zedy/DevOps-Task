@@ -28,7 +28,6 @@
       ansible.builtin.git:
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
         dest: /home/ubuntu/
-        update: no
 
     - name: Build Docker image from Dockerfile
       community.docker.docker_image:
