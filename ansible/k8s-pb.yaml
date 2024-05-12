@@ -62,7 +62,7 @@
               spec:
                 containers:
                   - name: paymob-dev
-                    image: "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}""
+                    image: "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}"
 
     - name: Apply Kubernetes deployment
       shell: kubectl apply -f /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
