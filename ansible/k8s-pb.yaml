@@ -12,37 +12,29 @@
     - name: Set build timestamp
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
-    
-    - name: Install pip
-      apt:
-        name: python3-pip
-        state: present
-        become: yes
 
-    - name: Install AWS CLI using pip
-      pip:
-        name: awscli
-        state: present
+    - name: Check that you can connect (GET) to a page and it returns a status 200
+      ansible.builtin.uri:
+        url: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
+    # - name: Download kubectl
+    #   get_url:
+    #     url: "https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl"
+    #     dest: "/usr/local/bin/kubectl"
+    #     mode: '0755'
 
-    - name: Download kubectl
-      get_url:
-        url: "https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl"
-        dest: "/usr/local/bin/kubectl"
-        mode: '0755'
-
-    - name: Add specified user to Docker group
-      user:
-        name: ubuntu  # Change this to the user you want to add to the Docker group
-        groups: docker
-        append: yes
+    # - name: Add specified user to Docker group
+    #   user:
+    #     name: ubuntu  # Change this to the user you want to add to the Docker group
+    #     groups: docker
+    #     append: yes
 
 
-    - name: Just ensuring the repo checkout exists
-      ansible.builtin.git:
-        repo: 'https://github.com/El-Zedy/DevOps-Task.git'
-        dest: /home/ubuntu/DevOps-Task
+    # - name: Just ensuring the repo checkout exists
+    #   ansible.builtin.git:
+    #     repo: 'https://github.com/El-Zedy/DevOps-Task.git'
+    #     dest: /home/ubuntu/DevOps-Task
         
-    - name: Build Docker image from Dockerfile using shell
-      command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
+    # - name: Build Docker image from Dockerfile using shell
+    #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
 
