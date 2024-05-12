@@ -12,11 +12,11 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
                 dir('ansible') {
-            // Run Ansible playbook
-                ansiblePlaybook(
-                    credentialsId: 'ansible-server', 
-                    installation: 'Ansible', 
-                    playbook: 'playbook.yaml' // Changed because we're already in the ansible directory
+                    sh "ls && pwd"
+                    ansiblePlaybook(
+                        credentialsId: 'ansible-server', 
+                        installation: 'Ansible', 
+                        playbook: 'playbook.yaml' // Changed because we're already in the ansible directory
             )
              }
             }
