@@ -5,6 +5,7 @@
      account_id: "454717754853"
      repo_name: "paymob"
      region: "us-east-1"
+
   become: true
   tasks:
 
@@ -47,10 +48,10 @@
         line: '\1{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}\2'
         backrefs: yes
 
-    - name: Read deployment file
-      ansible.builtin.command:
-        cmd: cat /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
-      register: deployment_file_content
+    - name: Install kubernetes.core collection
+      ansible.builtin.ansible_galaxy:
+        type: collection
+        name: kubernetes.core
 
     - name: Deploy Application
       kubernetes.core.k8s:
