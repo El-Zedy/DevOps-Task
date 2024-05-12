@@ -41,12 +41,10 @@
     - name: Add Cluster context
       command: aws eks update-kubeconfig --region us-east-1 --name EKS-Simple-Cluster-DEV
 
-    - name: Set image URL in deployment.yaml
-      lineinfile:
-        path: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
-        regexp: '^(\s*image:\s*").+(")'
-        line: '\1{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}\2'
-        backrefs: yes
+    - name: Update image URL and deploy to Kubernetes
+      shell: |
+        sed -i 's|image: "IMAGE_NAME"|image: "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}"|' /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+        kubectl apply -f /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+      args:
+        executable: /bin/bash
 
-    - name: Deploy to Kubernetes
-      command: kubectl apply -f /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
