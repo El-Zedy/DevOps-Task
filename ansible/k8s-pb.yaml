@@ -48,8 +48,8 @@
         backrefs: yes
 
 
-    - name: Deploy to Kubernetes
-      community.kubernetes.k8s:
-        kubeconfig: /home/ubuntu/.kube/config
-        state: present
-        src: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+    # - name: Deploy to Kubernetes
+    #   community.kubernetes.k8s:
+    #     kubeconfig: /home/ubuntu/.kube/config
+    #     state: present
+    #     src: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
