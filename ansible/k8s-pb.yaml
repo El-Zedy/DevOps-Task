@@ -2,7 +2,9 @@
 - name: Install Docker and add user to Docker group
   hosts: all
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+     account_id: "454717754853"
+     repo_name: "paymob"
+     region: "us-east-1"
   become: true
   tasks:
 
@@ -15,19 +17,19 @@
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
-    - name: Just ensuring the repo checkout exists
+    - name: Clone repo
       ansible.builtin.git:
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
         dest: /home/ubuntu/DevOps-Task
         
     # - name: Build Docker image from Dockerfile using shell
-    #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
+    #   command: docker build -t "{{ repo_name }}":{{ build_timestamp }} ./DevOps-Task
     
-    - name: Login to AWS ECR
-      shell: aws s3 ls
+    - name: Create AWS ECR
+      command: aws ecr create-repository --repository-name "{{ repo_name }}"
 
-    # - name: login to ecr
-    #   command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 454717754853.dkr.ecr.us-east-1.amazonaws.com/paymob
-    # - name: create aws ecr
-    #   command: aws ecr create-repository --repository-name paymob
+    - name: Login to AWS ECR
+      command: aws ecr get-login-password --region "{{ region }}" | docker login --username AWS --password-stdin {{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}
+
+
 
