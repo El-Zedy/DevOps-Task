@@ -24,12 +24,13 @@
         
     # - name: Build Docker image from Dockerfile using shell
     #   command: docker build -t "{{ repo_name }}":{{ build_timestamp }} ./DevOps-Task
-    
+
     - name: Create AWS ECR
       command: aws ecr create-repository --repository-name "{{ repo_name }}"
 
     - name: Login to AWS ECR
-      command: aws ecr get-login-password --region "{{ region }}" | docker login --username AWS --password-stdin {{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}
+      shell: aws ecr get-login-password --region "{{ region }}" | docker login --username AWS --password-stdin {{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}
+
 
 
 
