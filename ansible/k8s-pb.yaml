@@ -2,6 +2,8 @@
 - name: Install Docker and add user to Docker group
   hosts: all
   become: true
+  roles:
+    - role: ansible-role-awscli
   tasks:
 
     - name: Update Ubuntu
@@ -12,10 +14,6 @@
     - name: Set build timestamp
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
-
-    - name: Check that you can connect (GET) to a page and it returns a status 200
-      ansible.builtin.uri:
-        url: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
     # - name: Download kubectl
     #   get_url:
