@@ -1,4 +1,3 @@
----
 - name: Build and Run Docker Container from a GitHub Repository
   hosts: all
   become: true
@@ -10,7 +9,8 @@
           path: '/tmp/DevOps-Task'
         name: 'elzedy/devops-app'
         tag: 'latest'
-        force: yes
+        force_source: yes  # Forces the build from the build context and not from Docker cache
+        force_tag: yes     # Always re-tag the image even if the image with the tag already exists
 
     - name: Run the Docker container
       docker_container:
