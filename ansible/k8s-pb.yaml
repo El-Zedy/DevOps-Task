@@ -36,3 +36,20 @@
 
     - name: Push Docker image to AWS ECR
       command: docker push "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}"
+
+    - name: Add Cluster context
+      command: aws eks update-kubeconfig --region us-east-1 --name EKS-Simple-Cluster-DEV
+
+    - name: Set image URL in deployment.yaml
+      lineinfile:
+        path: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+        regexp: '^(\s*image:\s*").+(")'
+        line: '\1{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}\2'
+        backrefs: yes
+
+
+    - name: Deploy to Kubernetes
+      community.kubernetes.k8s:
+        kubeconfig: /home/ubuntu/.kube/config
+        state: present
+        src: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymob-dev
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paymob-dev
+  template:
+    metadata:
+      labels:
+        app: paymob-dev
+    spec:
+      containers:
+        - name: paymob-dev
+          image: IMAGE_NAME
+          ports:
+            - containerPort: 8080
