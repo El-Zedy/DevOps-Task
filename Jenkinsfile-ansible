@@ -1,38 +1,27 @@
-// pipeline {
-//     agent any
-
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 // Specify the branch if it's not 'master'
-//                 git branch: 'main', url: 'https://github.com/El-Zedy/DevOps-Task.git'
-//             }
-//         }
-
-//         stage('Run Ansible Playbook') {
-//             steps {
-//                 dir('ansible') {
-//                     sh "ls && pwd"
-//                     ansiblePlaybook(
-//                         credentialsId: 'ansible-server', 
-//                         installation: 'Ansible', 
-//                         playbook: 'playbook.yaml' // Changed because we're already in the ansible directory
-//             )
-//              }
-//             }
-//         }
-//     }
-// }
-
 pipeline {
     agent any
 
     stages {
-        stage('Check Ansible Installation') {
+        stage('Checkout') {
             steps {
-                // Check if Ansible is available on the path
-                sh 'ansible --version'
+                // Specify the branch if it's not 'master'
+                git branch: 'main', url: 'https://github.com/El-Zedy/DevOps-Task.git'
+            }
+        }
+
+        stage('Run Ansible Playbook') {
+            steps {
+                dir('ansible') {
+                    sh "ls && pwd"
+                    ansiblePlaybook(
+                        credentialsId: 'ansible-server', 
+                        installation: 'Ansible', 
+                        inventory: 'inventory',
+                        playbook: 'playbook.yaml' // Changed because we're already in the ansible directory
+            )
+             }
             }
         }
     }
 }
+
