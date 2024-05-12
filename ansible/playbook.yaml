@@ -46,8 +46,4 @@
       command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
 
     - name: Run Container
-      community.docker.docker_container:
-        name: my_nginx
-        image: app:"{{ build_timestamp }}"
-        state: started
-  
+      command: docker run -d --name myapp app:{{ build_timestamp }} 
