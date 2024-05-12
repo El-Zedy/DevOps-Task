@@ -26,10 +26,20 @@
           - curl
           - software-properties-common
 
-    - name: Add Docker GPG apt Key
-      apt_key:
+    # - name: Add Docker GPG apt Key
+    #   apt_key:
+    #     url: https://download.docker.com/linux/ubuntu/gpg
+    #     state: present
+    - name: Download Docker GPG key
+      get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /tmp/docker.gpg
+
+    - name: Add Docker GPG key from file
+      apt_key:
+        file: /tmp/docker.gpg
         state: present
+
 
     - name: Add Docker repository
       ansible.builtin.apt_repository:
