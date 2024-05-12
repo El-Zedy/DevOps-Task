@@ -22,8 +22,8 @@
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
         dest: /home/ubuntu/DevOps-Task
         
-    # - name: Build Docker image from Dockerfile using shell
-    #   command: docker build -t "{{ repo_name }}":{{ build_timestamp }} ./DevOps-Task
+    - name: Build Docker image from Dockerfile using shell
+      command: docker build -t "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}" ./DevOps-Task
 
     - name: Create AWS ECR
       command: aws ecr create-repository --repository-name "{{ repo_name }}"
@@ -31,10 +31,8 @@
       failed_when: >
         create_repo_result.rc != 0 and "RepositoryAlreadyExistsException" not in create_repo_result.stderr
 
-
     - name: Login to AWS ECR
       shell: aws ecr get-login-password --region "{{ region }}" | docker login --username AWS --password-stdin {{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}
 
-
-
-
+    - name: Push Docker image to AWS ECR
+      command: docker push "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}"
