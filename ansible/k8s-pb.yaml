@@ -41,10 +41,28 @@
     - name: Add Cluster context
       command: aws eks update-kubeconfig --region us-east-1 --name EKS-Simple-Cluster-DEV
 
-    - name: Update image URL and deploy to Kubernetes
-      shell: |
-        sed -i 's|image: "IMAGE_NAME"|image: "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}"|' /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
-        kubectl apply -f /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
-      args:
-        executable: /bin/bash
+    - name: Create Kubernetes deployment YAML file
+      copy:
+        dest: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+        content: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: paymob-dev
+            namespace: dev
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: paymob-dev
+            template:
+              metadata:
+                labels:
+                  app: paymob-dev
+              spec:
+                containers:
+                  - name: paymob-dev
+                    image: "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}""
 
+    - name: Apply Kubernetes deployment
+      shell: kubectl apply -f /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml

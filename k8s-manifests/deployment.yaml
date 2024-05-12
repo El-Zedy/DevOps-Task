@@ -16,5 +16,3 @@ spec:
       containers:
         - name: paymob-dev
           image: IMAGE_NAME
-          ports:
-            - containerPort: 8080
