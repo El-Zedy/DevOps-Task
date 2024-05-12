@@ -48,19 +48,5 @@
         line: '\1{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}\2'
         backrefs: yes
 
-    - name: Install kubernetes.core collection
-      ansible.builtin.ansible_galaxy:
-        type: collection
-        name: kubernetes.core
-
-    - name: Deploy Application
-      kubernetes.core.k8s:
-        state: present
-        definition: "{{ lookup('file', '/home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml') | from_yaml }}"
-
-
-    # - name: Deploy to Kubernetes
-    #   community.kubernetes.k8s:
-    #     kubeconfig: /home/ubuntu/.kube/config
-    #     state: present
-    #     src: /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
+    - name: Deploy to Kubernetes
+      command: kubectl apply -f /home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml
