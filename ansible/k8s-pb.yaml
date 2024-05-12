@@ -22,6 +22,7 @@
       ansible.builtin.git:
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
         dest: /home/ubuntu/DevOps-Task
+        force: yes
         
     - name: Build Docker image from Dockerfile using shell
       command: docker build -t "{{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}:{{ build_timestamp }}" ./DevOps-Task
