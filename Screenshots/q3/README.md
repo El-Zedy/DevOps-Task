@@ -8,3 +8,16 @@
      - CI/CD job to build code on ansible and deploy it on Kubernetes
 
 # Please read the names of the images and view their content in order
+
+The infrastructure have maninly have 4 modules:
+
+- EKS Cluster itself
+- EKS Nodegroup
+- ECR
+- Network
+
+To apply it:
+
+     terraform init
+     terraform workspace select dev
+     terraform apply --var-file dev.tfvars
