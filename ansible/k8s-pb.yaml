@@ -9,41 +9,33 @@
         update_cache: yes
         upgrade: yes
 
-    - name: Install Docker CE
-      apt:
-        name: docker.io
-        state: present
-
     - name: Set build timestamp
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+    
+    - name: Install AWS CLI
+      apt:
+        name: awscli
+        state: present
+
+    - name: Download kubectl
+      get_url:
+        url: "https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl"
+        dest: "/usr/local/bin/kubectl"
+        mode: '0755'
 
     - name: Add specified user to Docker group
       user:
         name: ubuntu  # Change this to the user you want to add to the Docker group
         groups: docker
         append: yes
-    
-    - name: Ensure service is enabled
-      command: service docker restart
 
-    - name: Check if container is running
-      shell: docker ps
 
     - name: Just ensuring the repo checkout exists
       ansible.builtin.git:
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
         dest: /home/ubuntu/DevOps-Task
-
-    # - name: Build Docker image from Dockerfile
-    #   community.docker.docker_image:
-    #     build:
-    #       path: "./DevOps-Task" 
-    #     name: app
-    #     tag: "{{ build_timestamp }}"
-    #     source: build
+        
     - name: Build Docker image from Dockerfile using shell
       command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
 
-    - name: Run Container
-      command: docker run -d --name myapp app:{{ build_timestamp }} 
