@@ -2,6 +2,8 @@
 - name: Install Docker and add user to Docker group
   hosts: all
   become: true
+  roles:
+    - role: christiangda.awscli
   tasks:
 
     - name: Update Ubuntu
@@ -13,8 +15,7 @@
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
-  roles:
-      - role: christiangda.awscli
+ 
 
     # - name: Download kubectl
     #   get_url:
