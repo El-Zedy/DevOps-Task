@@ -35,10 +35,12 @@
         repo: 'https://github.com/El-Zedy/DevOps-Task.git'
         dest: /home/ubuntu/DevOps-Task
 
-    - name: Build Docker image from Dockerfile
-      community.docker.docker_image:
-        build:
-          path: "./DevOps-Task" 
-        name: app
-        tag: "{{ build_timestamp }}"
-        source: build
+    # - name: Build Docker image from Dockerfile
+    #   community.docker.docker_image:
+    #     build:
+    #       path: "./DevOps-Task" 
+    #     name: app
+    #     tag: "{{ build_timestamp }}"
+    #     source: build
+    - name: Build Docker image from Dockerfile using shell
+      command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
