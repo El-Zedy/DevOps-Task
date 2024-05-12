@@ -15,14 +15,16 @@
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
-    # - name: Just ensuring the repo checkout exists
-    #   ansible.builtin.git:
-    #     repo: 'https://github.com/El-Zedy/DevOps-Task.git'
-    #     dest: /home/ubuntu/DevOps-Task
+    - name: Just ensuring the repo checkout exists
+      ansible.builtin.git:
+        repo: 'https://github.com/El-Zedy/DevOps-Task.git'
+        dest: /home/ubuntu/DevOps-Task
         
-    # - name: Build Docker image from Dockerfile using shell
-    #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
+    - name: Build Docker image from Dockerfile using shell
+      command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
     
-    - name: create aws ecr
-      command: aws ecr create-repository --repository-name paymob
+    - name: login to ecr
+      command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 454717754853.dkr.ecr.us-east-1.amazonaws.com/paymob
+    # - name: create aws ecr
+    #   command: aws ecr create-repository --repository-name paymob
 
