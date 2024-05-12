@@ -2,8 +2,6 @@
 - name: Install Docker and add user to Docker group
   hosts: all
   become: true
-  roles:
-    - role: christiangda.awscli
   tasks:
 
     - name: Update Ubuntu
@@ -15,21 +13,6 @@
       set_fact:
         build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
- 
-
-    # - name: Download kubectl
-    #   get_url:
-    #     url: "https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl"
-    #     dest: "/usr/local/bin/kubectl"
-    #     mode: '0755'
-
-    # - name: Add specified user to Docker group
-    #   user:
-    #     name: ubuntu  # Change this to the user you want to add to the Docker group
-    #     groups: docker
-    #     append: yes
-
-
     # - name: Just ensuring the repo checkout exists
     #   ansible.builtin.git:
     #     repo: 'https://github.com/El-Zedy/DevOps-Task.git'
@@ -37,4 +20,9 @@
         
     # - name: Build Docker image from Dockerfile using shell
     #   command: docker build -t app:{{ build_timestamp }} ./DevOps-Task
+    
+    - name: Create an AWS ECR Repository
+      community.aws.ecs_ecr:
+        name: paymob
+
 
