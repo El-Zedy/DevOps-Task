@@ -26,5 +26,5 @@
     - name: Create an AWS ECR Repository
       community.aws.ecs_ecr:
         name: paymob
-
+        state: present
 
