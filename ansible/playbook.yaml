@@ -1,0 +1,19 @@
+---
+- name: Build and Run Docker Container from a GitHub Repository
+  hosts: all
+  become: true
+  tasks:
+    - name: Build Docker image
+      docker_image:
+        source: build
+        build:
+          path: '/tmp/DevOps-Task'
+        name: 'elzedy/devops-app'
+        tag: 'latest'
+        force: yes
+
+    - name: Run the Docker container
+      docker_container:
+        name: 'devops-app'
+        image: 'elzedy/devops-app:latest'
+        state: started
