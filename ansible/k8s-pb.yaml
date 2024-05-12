@@ -50,7 +50,7 @@
     - name: Deploy Application
       kubernetes.core.k8s:
         state: present
-        definition: "{{ lookup('file', 'k8s-manifests/deployment.yaml') | from_yaml }}"
+        definition: "{{ lookup('file', '/home/ubuntu/DevOps-Task/k8s-manifests/deployment.yaml') | from_yaml }}"
 
     # - name: Deploy to Kubernetes
     #   community.kubernetes.k8s:
