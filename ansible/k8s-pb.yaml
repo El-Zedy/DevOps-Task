@@ -27,6 +27,10 @@
 
     - name: Create AWS ECR
       command: aws ecr create-repository --repository-name "{{ repo_name }}"
+      register: create_repo_result
+      failed_when: >
+        create_repo_result.rc != 0 and "RepositoryAlreadyExistsException" not in create_repo_result.stderr
+
 
     - name: Login to AWS ECR
       shell: aws ecr get-login-password --region "{{ region }}" | docker login --username AWS --password-stdin {{ account_id }}.dkr.ecr.{{ region }}.amazonaws.com/{{ repo_name }}
