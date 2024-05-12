@@ -12,6 +12,7 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
                 sh "pwd"
+                sh "ls"
                 // Run Ansible playbook
                 ansiblePlaybook(
                     credentialsId: 'ansible-server', 
