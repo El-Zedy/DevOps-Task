@@ -11,17 +11,14 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                sh "pwd"
-                sh "ls"
-                sh "cd ansible && pwd && ls"
-                sh "pwd"
-                sh "ls"
-                // Run Ansible playbook
+                dir('ansible') {
+            // Run Ansible playbook
                 ansiblePlaybook(
                     credentialsId: 'ansible-server', 
                     installation: 'Ansible', 
-                    playbook: 'ansible/playbook.yaml'
-                )
+                    playbook: 'playbook.yaml' // Changed because we're already in the ansible directory
+            )
+             }
             }
         }
     }
