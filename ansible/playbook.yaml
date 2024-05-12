@@ -9,28 +9,17 @@
         update_cache: yes
         upgrade: yes
 
-    - name: Set build timestamp
-      set_fact:
-        build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
-    # - name: Install required packages
-    #   apt:
-    #     name: "{{ packages }}"
-    #     state: present
-    #     update_cache: yes
-    #   vars:
-    #     packages:
-    #       - apt-transport-https
-    #       - gnupg2
-    #       - ca-certificates
-    #       - curl
-    #       - software-properties-common
+   
 
     - name: Install Docker CE
       apt:
         name: docker.io
-        state: latest
-        update_cache: yes
+        state: present
+
+    - name: Set build timestamp
+      set_fact:
+        build_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 
     - name: Add specified user to Docker group
       user:
